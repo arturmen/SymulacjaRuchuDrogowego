@@ -1,9 +1,12 @@
-package Controllers;
+package controllers;
 
 
-import DataAccess.MapReader;
-import Models.Map;
-import Views.ShowMapView;
+import dataAccess.MapReader;
+import models.Map;
+import views.ErrorView;
+import views.ShowMapView;
+
+import java.io.IOException;
 
 public class MainController {
 
@@ -12,7 +15,12 @@ public class MainController {
     public void home(){
 
         MapReader reader = new MapReader();
-        map = reader.readMap();
+        try {
+            map = reader.readMap();
+        } catch (IOException e) {
+            ErrorView errorView = new ErrorView();
+            errorView.showError(e);
+        }
         ShowMapView showMapView = new ShowMapView(map);
         showMapView.showMap();
     }

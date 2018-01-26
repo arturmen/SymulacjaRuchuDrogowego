@@ -1,6 +1,6 @@
 package agh.pro;
 
-import Controllers.MainController;
+import controllers.MainController;
 
 public class Main {
 

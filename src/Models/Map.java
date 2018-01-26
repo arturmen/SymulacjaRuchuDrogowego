@@ -1,17 +1,27 @@
-package Models;
+package models;
+
+import java.util.List;
 
 public class Map {
-    private int[][] mapArray;
+    private FieldType[][] mapArray;
 
-    public Map(){
-        for (int[] ints : mapArray = new int[2][2]) {
-            ints[0]=1;
-            ints[1]=2;
+
+    public Map(List<List<FieldType>> lines) {
+        mapArray = new FieldType[lines.size()][];
+        for(int i = 0;i<lines.size();i++){
+            mapArray[i]= new FieldType[lines.get(i).size()];
+
+            lines.get(i).toArray(mapArray[i]);
         }
+
+
+        lines.toArray(mapArray);
+
+
 
     }
 
-    public int[][] getMapArray() {
+    public FieldType[][] getMapArray() {
         return mapArray;
     }
 }
