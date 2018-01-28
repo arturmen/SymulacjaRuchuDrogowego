@@ -4,6 +4,7 @@ public abstract class Car {
     private Position position;
     private int speed;
     private Direction direction;
+    private int movesDone = 0;
 
     public Car(Position position, int speed, Direction direction) {
         this.position=position;
@@ -33,5 +34,16 @@ public abstract class Car {
 
     public void setSpeed(int speed) {
         this.speed = speed;
+    }
+
+    public int getMovesDone() {
+        return movesDone;
+    }
+
+    public void setMovesDone(int movesDone){
+        this.movesDone=movesDone;
+    }
+    public void addMovesDone() {
+        this.movesDone = this.movesDone + 1;
     }
 }

@@ -8,12 +8,12 @@ import static models.Direction.*;
 import static models.Direction.RIGHT;
 import static models.FieldType.GRASS;
 
-public class CarReader {
+public class CarFounder {
     public Map map;
     public List<Car> carList;
     Random generator = new Random();
 
-    public CarReader(Map map){
+    public CarFounder(Map map){
         this.map = map;
         carList = new ArrayList<>();
     }

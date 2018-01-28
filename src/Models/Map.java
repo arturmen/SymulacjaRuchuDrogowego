@@ -21,4 +21,8 @@ public class Map {
     public void setCarList(List<Car> carList) {
         this.carList = carList;
     }
+
+    public List<Car> getCarList() {
+        return carList;
+    }
 }
