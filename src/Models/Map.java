@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Map {
     private FieldType[][] mapArray;
-    private List <Car> carList;
+    private List<Car> carList;
 
     public Map(List<List<FieldType>> lines) {
         mapArray = new FieldType[lines.size()][];
@@ -14,6 +14,7 @@ public class Map {
             lines.get(i).toArray(mapArray[i]);
         }
     }
+
     public FieldType[][] getMapArray() {
         return mapArray;
     }
@@ -24,5 +25,15 @@ public class Map {
 
     public List<Car> getCarList() {
         return carList;
+    }
+
+
+    public UserCar getUserCar() {
+        for (Car car : carList){
+            if(car instanceof UserCar) {
+                return (UserCar) car;
+            }
+        }
+        return null;
     }
 }

@@ -27,7 +27,6 @@ public class MainController {
         map.setCarList(carFounder.readCars());
 
 
-
         ShowMapView showMapView = new ShowMapView(map);
         showMapView.showMap();
 
@@ -37,7 +36,7 @@ public class MainController {
 
         Sternik sternik = new Sternik(map);
 
-        while(!showInstructionsView.act()) {
+        while(showInstructionsView.act()) {
             Direction direction = null;
             while (true) {
                 MoveResult moveResult = sternik.makeMove(direction);
@@ -51,6 +50,8 @@ public class MainController {
                 if (moveResult == MoveResult.CROSS){
                     AskForTurnView askForTurnView = new AskForTurnView();
                     direction = askForTurnView.act();
+                    sternik.crossTurn(direction,map);
+                    break;
                 }
             }
         }
