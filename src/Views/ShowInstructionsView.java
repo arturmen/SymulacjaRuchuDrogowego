@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class ShowInstructionsView {
 
     public boolean act(){
+        showInstruction();
 
         Scanner scanner = new Scanner(System.in);
         String line = scanner.nextLine();

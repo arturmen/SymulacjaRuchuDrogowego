@@ -15,8 +15,6 @@ public class Map {
         }
 
 
-        lines.toArray(mapArray);
-
 
 
     }

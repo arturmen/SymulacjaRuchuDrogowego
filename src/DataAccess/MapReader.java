@@ -18,7 +18,7 @@ public class MapReader {
         try(BufferedReader br = new BufferedReader(new FileReader("Map.txt")))
         {
             String line = br.readLine();
-            while(line != null && line.equals("")){
+            while(line != null && !line.equals("")){
                 ArrayList<FieldType> mapLine = new ArrayList<>();
                 lines.add(mapLine);
                 for(int i = 0; i< line.length();i++){
