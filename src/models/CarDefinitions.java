@@ -4,6 +4,7 @@ package models;
 import models.*;
 
 import java.lang.reflect.Field;
+import java.util.Random;
 
 import static models.Direction.*;
 import static models.FieldType.GRASS;
@@ -11,17 +12,18 @@ import static models.FieldType.ROAD;
 import static models.FieldType.USERCAR;
 
 
-public class UserCarDefinitions {
+public class CarDefinitions {
     private Map mapArray;
-    public int speed = 3;
-    private UserCar userCar;
+    Random generator = new Random();
+    public int speed = generator.nextInt(3)+1;
+    private Car car;
 
-    public UserCarDefinitions(Map mapArray) {
+    public CarDefinitions(Map mapArray) {
         this.mapArray = mapArray;
-        userCar = new UserCar(getUserCarPosition(),speed,getUserCarDirection());
+        computerCar = new ComputerCar(getCarPosition(),speed,getCarDirection());
     }
 
-    public Position getUserCarPosition() {
+    public Position getCarPosition() {
         for (int i = 0; i < mapArray.getMapArray().length; i++) {
             for (int j = 0; j < mapArray.getMapArray()[i].length; j++) {
                 if (mapArray.getMapArray()[i][j] == USERCAR) {
@@ -35,8 +37,8 @@ public class UserCarDefinitions {
         return position1;
     }
 
-    public Direction getUserCarDirection() {
-        Position position1 = getUserCarPosition();
+    public Direction getCarDirection() {
+        Position position1 = getCarPosition();
         if(mapArray.getMapArray()[position1.getX()+1][position1.getY()] == GRASS) return RIGHT;
         if(mapArray.getMapArray()[position1.getX()][position1.getY()+1] == GRASS) return UP;
         if(mapArray.getMapArray()[position1.getX()][position1.getY()-1] == GRASS) return DOWN;

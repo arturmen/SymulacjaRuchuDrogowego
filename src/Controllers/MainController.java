@@ -23,6 +23,9 @@ public class MainController {
             ErrorView errorView = new ErrorView();
             errorView.showError(e);
         }
+        CarReader carReader = new CarReader(map);
+        setCarList(carReader.readCars());
+
 
 
         ShowMapView showMapView = new ShowMapView(map);

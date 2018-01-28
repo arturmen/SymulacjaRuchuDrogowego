@@ -51,4 +51,6 @@ public class MapReader {
                 throw new IllegalArgumentException("Argument should be x, 0, @, A or U");
         }
     }
+
+
 }

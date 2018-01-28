@@ -7,9 +7,6 @@ public class Sternik {
     public Sternik(Map map){
 
         this.map = map;
-        UserCarDefinitions userCarDefinitions = new UserCarDefinitions(map);
-        UserCar userCar = new UserCar(userCarDefinitions.getUserCarPosition(),userCarDefinitions.speed,userCarDefinitions.getUserCarDirection());
-
     }
 
 
