@@ -49,8 +49,11 @@ public class MainController {
                 }
                 if (moveResult == MoveResult.CROSS){
                     AskForTurnView askForTurnView = new AskForTurnView();
+                    askForTurnView.showInstruction();
                     direction = askForTurnView.act();
                     sternik.crossTurn(direction,map);
+
+
                     break;
                 }
             }

@@ -36,4 +36,8 @@ public class Map {
         }
         return null;
     }
+
+    public void setMapArrayField(int x, int y, FieldType fieldType) {
+        mapArray[x][y]=fieldType;
+    }
 }

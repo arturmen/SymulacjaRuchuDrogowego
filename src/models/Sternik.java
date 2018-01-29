@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
-import static models.FieldType.CROSS;
-import static models.FieldType.ROAD;
-import static models.FieldType.USERCAR;
+import static models.FieldType.*;
 
 public class Sternik {
     private Map map;
@@ -19,7 +17,7 @@ public class Sternik {
     public Sternik(Map map){
 
         this.map = map;
-        this.carList = map.getCarList();
+        this.carList = new ArrayList<>();
 
     }
 
@@ -36,11 +34,12 @@ public class Sternik {
     private MoveResult moveCars(Direction direction){
         List<Car> doneCars = new ArrayList<>();
         for(Car car : carList){
-
-            if(moveCar(car) && car instanceof UserCar){
+            boolean resultCar = moveCar(car);
+            if(car instanceof UserCar && resultCar) {
                 crossFlag = true;
+                car.setMovesDone(car.getSpeed()-1);
             }
-            if(moveCar(car)){
+            else if(resultCar){
                 car.setMovesDone(car.getSpeed());
             }
             car.addMovesDone();
@@ -62,46 +61,53 @@ public class Sternik {
 
     private void prepareTurn(){
 
-        carList = map.getCarList();
+        carList = new ArrayList<>(map.getCarList());
         for(Car car :carList){
             car.setMovesDone(0);
         }
         crossFlag = false;
     }
-        private boolean moveCar(Car car){
-            Position position = car.getPosition();
-            switch(car.getDirection()) {
-                case UP:
-                    if(map.getMapArray()[position.getX()-1][position.getY()]== CROSS ) {
-                        //map = makeTurnAfterUP(askForTurnView.act(),userCar,map);
-                        return true;
-                    }
-                    map.getMapArray()[position.getX()-1][position.getY()] = USERCAR;
-                    map.getMapArray()[position.getX()][position.getY()] = ROAD;
-                case DOWN:
-                    if(map.getMapArray()[position.getX()+1][position.getY()]== CROSS ) {
-                        //map = makeTurnAfterDOWN(askForTurnView.act(),Car,map);
-                        return true;
-                    }
-                    map.getMapArray()[position.getX()+1][position.getY()] = USERCAR;
-                    map.getMapArray()[position.getX()][position.getY()] = ROAD;
-                case RIGHT:
-                    if(map.getMapArray()[position.getX()][position.getY()+1]== CROSS ) {
-                        //map = makeTurnAfterRIGHT(askForTurnView.act(),userCar,map);
-                        return true;
-                    }
-                    map.getMapArray()[position.getX()][position.getY()+1] = USERCAR;
-                    map.getMapArray()[position.getX()][position.getY()] = ROAD;
-                case LEFT:
-                    if(map.getMapArray()[position.getX()][position.getY()-1]== CROSS ) {
-                       // map = makeTurnAfterLeft(askForTurnView.act(),userCar,map);
-                        return true;
-                    }
-                    map.getMapArray()[position.getX()][position.getY()-1] = USERCAR;
-                    map.getMapArray()[position.getX()][position.getY()] = ROAD;
-            }
-            return false;
+
+    private boolean moveCar(Car car){
+        Position position = car.getPosition();
+        int i = position.getX();
+        int j = position.getY();
+        switch(car.getDirection()) {
+            case UP:
+                if(map.getMapArray()[position.getX()-1][position.getY()]== CROSS ) {
+                    return true;
+                }
+                map.setMapArrayField(i-1,j,USERCAR);
+                map.setMapArrayField(i,j,ROAD);
+                car.setPosition(new Position(i-1,j));
+                break;
+            case DOWN:
+                if(map.getMapArray()[position.getX()+1][position.getY()]== CROSS ) {
+                    return true;
+                }
+                map.setMapArrayField(i+1,j,USERCAR);
+                map.setMapArrayField(i,j,ROAD);
+                car.setPosition(new Position(i+1,j));
+                break;
+            case RIGHT:
+                if(map.getMapArray()[position.getX()][position.getY()+1]== CROSS ) {
+                    return true;
+                }
+                map.setMapArrayField(i,j+1,USERCAR);
+                map.setMapArrayField(i,j,ROAD);
+                car.setPosition(new Position(i,j+1));
+                break;
+            case LEFT:
+                if(map.getMapArray()[position.getX()][position.getY()-1]== CROSS ) {
+                    return true;
+                }
+                map.setMapArrayField(i,j-1,USERCAR);
+                map.setMapArrayField(i,j,ROAD);
+                car.setPosition(new Position(i,j-1));
+                break;
         }
+        return false;
+    }
 
     public void crossTurn(Direction direction,Map map){
         UserCar userCar = map.getUserCar();
@@ -109,12 +115,16 @@ public class Sternik {
             switch(directionBefore){
                 case UP:
                     makeTurnAfterUP(direction,userCar);
+                    break;
                 case DOWN:
                     makeTurnAfterDOWN(direction,userCar);
+                    break;
                 case RIGHT:
                     makeTurnAfterRIGHT(direction,userCar);
+                    break;
                 case LEFT:
                     makeTurnAfterLeft(direction, userCar);
+                    break;
 
             }
 
@@ -122,92 +132,132 @@ public class Sternik {
 
     public void makeTurnAfterUP(Direction act, Car car) {
         Position position = car.getPosition();
+        int i = position.getX();
+        int j = position.getY();
         switch(act){
             case UP:
                 car.setDirection(Direction.UP);
-                map.getMapArray()[car.position.getX()][car.position.getY()] = ROAD;
-                map.getMapArray()[car.position.getX()-2][car.position.getY()] = USERCAR;
+                map.setMapArrayField(i-2,j,USERCAR);
+                map.setMapArrayField(i,j,ROAD);
+                car.setPosition(new Position(i-2,j));
+                break;
             case DOWN:
                 car.setDirection(Direction.DOWN);
-                map.getMapArray()[car.position.getX()][car.position.getY()] = ROAD;
-                map.getMapArray()[car.position.getX()][car.position.getY()-1] = USERCAR;
+                map.setMapArrayField(i,j-1,USERCAR);
+                map.setMapArrayField(i,j,ROAD);
+                car.setPosition(new Position(i,j-1));
+                break;
             case RIGHT:
                 car.setDirection(Direction.RIGHT);
-                map.getMapArray()[car.position.getX()][car.position.getY()] = ROAD;
-                map.getMapArray()[car.position.getX()-1][car.position.getY()+1] = USERCAR;
+                map.setMapArrayField(i-1,j+1,USERCAR);
+                map.setMapArrayField(i,j,ROAD);
+                car.setPosition(new Position(i-1,j+1));
+                break;
             case LEFT:
                 car.setDirection(Direction.LEFT);
-                map.getMapArray()[car.position.getX()][car.position.getY()] = ROAD;
-                map.getMapArray()[car.position.getX()-2][car.position.getY()-2] = USERCAR;
+                map.setMapArrayField(i-2,j-2,USERCAR);
+                map.setMapArrayField(i,j,ROAD);
+                car.setPosition(new Position(i-2,j-2));
+                break;
         }
         return;
     }
 
     public Map makeTurnAfterDOWN(Direction act, Car car) {
         Position position = car.getPosition();
+        int i = position.getX();
+        int j = position.getY();
         switch(act){
             case UP:
                 car.setDirection(Direction.UP);
-                map.getMapArray()[car.position.getX()][car.position.getY()] = ROAD;
-                map.getMapArray()[car.position.getX()][car.position.getY()+1] = USERCAR;
+                map.setMapArrayField(i,j+1,USERCAR);
+                map.setMapArrayField(i,j,ROAD);
+                car.setPosition(new Position(i,j+1));
+                break;
             case DOWN:
                 car.setDirection(Direction.DOWN);
-                map.getMapArray()[car.position.getX()][car.position.getY()] = ROAD;
-                map.getMapArray()[car.position.getX()+2][car.position.getY()] = USERCAR;
+                map.setMapArrayField(i+2,j,USERCAR);
+                map.setMapArrayField(i,j,ROAD);
+                car.setPosition(new Position(i+2,j));
+                break;
             case RIGHT:
                 car.setDirection(Direction.RIGHT);
-                map.getMapArray()[car.position.getX()][car.position.getY()] = ROAD;
-                map.getMapArray()[car.position.getX()+2][car.position.getY()+2] = USERCAR;
+                map.setMapArrayField(i+2,j+2,USERCAR);
+                map.setMapArrayField(i,j,ROAD);
+                car.setPosition(new Position(i+2,j+2));
+                break;
             case LEFT:
                 car.setDirection(Direction.LEFT);
-                map.getMapArray()[car.position.getX()][car.position.getY()] = ROAD;
-                map.getMapArray()[car.position.getX()+1][car.position.getY()-1] = USERCAR;
+                map.setMapArrayField(i+1,j-1,USERCAR);
+                map.setMapArrayField(i,j,ROAD);
+                car.setPosition(new Position(i+1,j-1));
+                break;
         }
         return map;
     }
 
     public Map makeTurnAfterRIGHT(Direction act, Car car) {
         Position position = car.getPosition();
+        int i = position.getX();
+        int j = position.getY();
         switch(act){
             case UP:
                 car.setDirection(Direction.UP);
-                map.getMapArray()[car.position.getX()][car.position.getY()] = ROAD;
-                map.getMapArray()[car.position.getX()-2][car.position.getY()+2] = USERCAR;
+                map.setMapArrayField(i-2,j+2,USERCAR);
+                map.setMapArrayField(i,j,ROAD);
+                car.setPosition(new Position(i-2,j+2));
+                break;
             case DOWN:
                 car.setDirection(Direction.DOWN);
-                map.getMapArray()[car.position.getX()][car.position.getY()] = ROAD;
-                map.getMapArray()[car.position.getX()+1][car.position.getY()+1] = USERCAR;
+                map.setMapArrayField(i+1,j+1,USERCAR);
+                map.setMapArrayField(i,j,ROAD);
+                car.setPosition(new Position(i+1,j+1));
+                break;
             case RIGHT:
                 car.setDirection(Direction.RIGHT);
-                map.getMapArray()[car.position.getX()][car.position.getY()] = ROAD;
-                map.getMapArray()[car.position.getX()][car.position.getY()+2] = USERCAR;
+                map.setMapArrayField(i,j+2,USERCAR);
+                map.setMapArrayField(i,j,ROAD);
+                car.setPosition(new Position(i,j+2));
+                break;
             case LEFT:
                 car.setDirection(Direction.LEFT);
-                map.getMapArray()[car.position.getX()][car.position.getY()] = ROAD;
-                map.getMapArray()[car.position.getX()-1][car.position.getY()] = USERCAR;
+                map.setMapArrayField(i-1,j,USERCAR);
+                map.setMapArrayField(i,j,ROAD);
+                car.setPosition(new Position(i-1,j));
+                break;
         }
         return map;
     }
 
     public Map makeTurnAfterLeft(Direction act, Car car) {
         Position position = car.getPosition();
+        int i = position.getX();
+        int j = position.getY();
         switch(act){
             case UP:
                 car.setDirection(Direction.UP);
-                map.getMapArray()[car.position.getX()][car.position.getY()] = ROAD;
-                map.getMapArray()[car.position.getX()-1][car.position.getY()-1] = USERCAR;
+                map.setMapArrayField(i-1,j-1,USERCAR);
+                map.setMapArrayField(i,j,ROAD);
+                car.setPosition(new Position(i-1,j-1));
+                break;
             case DOWN:
                 car.setDirection(Direction.DOWN);
-                map.getMapArray()[car.position.getX()][car.position.getY()] = ROAD;
-                map.getMapArray()[car.position.getX()+1][car.position.getY()-2] = USERCAR;
+                map.setMapArrayField(i+1,j-2,USERCAR);
+                map.setMapArrayField(i,j,ROAD);
+                car.setPosition(new Position(i+1,j-2));
+                break;
             case RIGHT:
                 car.setDirection(Direction.RIGHT);
-                map.getMapArray()[car.position.getX()][car.position.getY()] = ROAD;
-                map.getMapArray()[car.position.getX()+1][car.position.getY()] = USERCAR;
+                map.setMapArrayField(i+1,j,USERCAR);
+                map.setMapArrayField(i,j,ROAD);
+                car.setPosition(new Position(i+1,j));
+                break;
             case LEFT:
                 car.setDirection(Direction.LEFT);
-                map.getMapArray()[car.position.getX()][car.position.getY()] = ROAD;
-                map.getMapArray()[car.position.getX()][car.position.getY()-2] = USERCAR;
+                map.setMapArrayField(i,j-2,USERCAR);
+                map.setMapArrayField(i,j,ROAD);
+                car.setPosition(new Position(i,j-2));
+                break;
         }
         return map;
     }

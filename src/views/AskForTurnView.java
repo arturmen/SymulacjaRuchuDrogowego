@@ -14,21 +14,25 @@ public class AskForTurnView {
 
         Scanner scanner = new Scanner(System.in);
         String line = scanner.nextLine();
+        while(true) {
+            if (line.equals("r")) {
+                return RIGHT;
+            } else if (line.equals("l")) {
+                return LEFT;
+            } else if (line.equals("u")) {
+                return UP;
+            } else if (line.equals("d")) {
+                return DOWN;
+            }
 
-        if(line=="r"){
-            return RIGHT;
+            showBadInput();
+            line = scanner.nextLine();
         }
-        else if(line=="l"){
-            return LEFT;
-        }
-        else if(line=="u"){
-            return UP;
-        }
-        else if(line=="d"){
-            return DOWN;
-        }
-        return UP;
 
+    }
+
+    private void showBadInput() {
+        System.out.println("złe wejście");
     }
 
 
