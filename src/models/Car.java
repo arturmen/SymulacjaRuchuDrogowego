@@ -1,7 +1,7 @@
 package models;
 
 public abstract class Car {
-    public Position position; //zrob to na private - zmien funkcje w MoveCar
+    public Position position;
     private int speed;
     private Direction direction;
     private int movesDone = 0;
