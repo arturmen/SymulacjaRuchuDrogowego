@@ -17,7 +17,7 @@ public class ShowInstructionsView {
     }
 
     private void showInstruction(){
-        System.out.println("Nastepny ruch - wciśnij klawisz");
+        System.out.println("Nastepny ruch - wciśnij jakikolwiek klawisz");
         System.out.println("Zakończ program - wciśnij q");
     }
 

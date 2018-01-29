@@ -34,12 +34,12 @@ public class MainController {
         ShowInstructionsView showInstructionsView = new ShowInstructionsView();
 
 
-        Sternik sternik = new Sternik(map);
+        Pilot pilot = new Pilot(map);
 
         while(showInstructionsView.act()) {
             Direction direction = null;
             while (true) {
-                MoveResult moveResult = sternik.makeMove(direction);
+                MoveResult moveResult = pilot.makeMove(direction);
                 showMapView.showMap();
                 if (moveResult == MoveResult.END) {
                     break;
@@ -51,7 +51,14 @@ public class MainController {
                     AskForTurnView askForTurnView = new AskForTurnView();
                     askForTurnView.showInstruction();
                     direction = askForTurnView.act();
-                    sternik.crossTurn(direction,map);
+                    if(!pilot.crossTurn(direction,map)){
+                        do {
+                            askForTurnView.showBadInput();
+                            askForTurnView.showInstruction();
+                            direction = askForTurnView.act();
+                        }
+                        while(!pilot.crossTurn(direction,map));
+                    }
 
 
                     break;

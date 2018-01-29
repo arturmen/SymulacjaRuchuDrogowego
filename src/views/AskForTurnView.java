@@ -31,13 +31,13 @@ public class AskForTurnView {
 
     }
 
-    private void showBadInput() {
+    public void showBadInput() {
         System.out.println("złe wejście");
     }
 
 
     public void showInstruction(){
-        System.out.println("Nastepny ruch - wciśnij klawisz r,l,u,d");
+        System.out.println("Gdzie skręcić? - wciśnij klawisz r,l,u,d");
         return;
     }
 }
