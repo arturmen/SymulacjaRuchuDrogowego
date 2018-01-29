@@ -1,5 +1,5 @@
 package models;
 
 public enum FieldType {
-    ROAD,GRASS,CROSS,CAR,USERCAR
+    ROAD,GRASS,CROSS,CAR,USERCAR,END;
 }

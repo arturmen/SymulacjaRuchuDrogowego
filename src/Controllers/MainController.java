@@ -59,6 +59,7 @@ public class MainController {
                         }
                         while(!pilot.crossTurn(direction,map));
                     }
+                    showMapView.showMap();
 
 
                     break;

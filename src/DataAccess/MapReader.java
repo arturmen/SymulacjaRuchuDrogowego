@@ -47,8 +47,11 @@ public class MapReader {
             case'U':
                 return FieldType.USERCAR;
 
+            case'=':
+                return FieldType.END;
+
             default:
-                throw new IllegalArgumentException("Argument should be x, 0, @, A or U");
+                throw new IllegalArgumentException("Argument should be x, 0, @,=,A or U");
         }
     }
 

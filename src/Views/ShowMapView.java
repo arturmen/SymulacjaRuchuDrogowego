@@ -20,6 +20,7 @@ public class ShowMapView {
             System.out.println();
 
         }
+        System.out.println();
 
     }
 
@@ -39,10 +40,12 @@ public class ShowMapView {
 
             case USERCAR:
                 return 'U';
+            case END:
+                return '=';
 
 
             default:
-                throw new IllegalArgumentException("Argument should be ROAD, GRASS, CAR, CROSS or USERCAR");
+                throw new IllegalArgumentException("Argument should be ROAD, GRASS, CAR, END, CROSS or USERCAR");
         }
 
 
