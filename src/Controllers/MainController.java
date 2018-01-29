@@ -14,7 +14,7 @@ public class MainController {
 
     public Map map;
 
-    public void home(){
+    public void home() throws InterruptedException {
 
         MapReader reader = new MapReader();
         try {
@@ -41,6 +41,7 @@ public class MainController {
             while (true) {
                 MoveResult moveResult = pilot.makeMove(direction);
                 showMapView.showMap();
+                Thread.sleep(1000);
                 if (moveResult == MoveResult.END) {
                     break;
                 }
