@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 
+import static models.Direction.*;
 import static models.FieldType.*;
 
 public class Pilot {
@@ -81,6 +82,13 @@ public class Pilot {
         if(map.getMapArray()[i][j] == USERCAR) {
             switch (car.getDirection()) {
                 case UP:
+                    if (map.getMapArray()[position.getX() - 1][position.getY()] == END) {
+                        map.setMapArrayField(i,j,ROAD);
+                        map.setMapArrayField(i, j-1, USERCAR);
+                        car.setPosition(new Position(i , j-1));
+                        car.setDirection(DOWN);
+                        break;
+                    }
                     if (map.getMapArray()[position.getX() - 1][position.getY()] == CROSS) {
                         return true;
                     }
@@ -89,6 +97,13 @@ public class Pilot {
                     car.setPosition(new Position(i - 1, j));
                     break;
                 case DOWN:
+                    if (map.getMapArray()[position.getX() + 1][position.getY()] == END) {
+                        map.setMapArrayField(i, j, ROAD);
+                        map.setMapArrayField(i, j+1, USERCAR);
+                        car.setPosition(new Position(i , j+1));
+                        car.setDirection(UP);
+                        break;
+                    }
                     if (map.getMapArray()[position.getX() + 1][position.getY()] == CROSS) {
                         return true;
                     }
@@ -97,6 +112,13 @@ public class Pilot {
                     car.setPosition(new Position(i + 1, j));
                     break;
                 case RIGHT:
+                    if (map.getMapArray()[position.getX()][position.getY() + 1] == END) {
+                        map.setMapArrayField(i, j, ROAD);
+                        map.setMapArrayField(i-1, j, USERCAR);
+                        car.setPosition(new Position(i-1 , j));
+                        car.setDirection(LEFT);
+                        break;
+                    }
                     if (map.getMapArray()[position.getX()][position.getY() + 1] == CROSS) {
                         return true;
                     }
@@ -105,6 +127,13 @@ public class Pilot {
                     car.setPosition(new Position(i, j + 1));
                     break;
                 case LEFT:
+                    if (map.getMapArray()[position.getX()][position.getY() - 1] == END) {
+                        map.setMapArrayField(i, j, ROAD);
+                        map.setMapArrayField(i+1, j, USERCAR);
+                        car.setPosition(new Position(i+1 , j));
+                        car.setDirection(RIGHT);
+                        break;
+                    }
                     if (map.getMapArray()[position.getX()][position.getY() - 1] == CROSS) {
                         return true;
                     }
@@ -118,6 +147,13 @@ public class Pilot {
         else{
             switch (car.getDirection()) {
                 case UP:
+                    if (map.getMapArray()[position.getX() - 1][position.getY()] == END) {
+                        map.setMapArrayField(i, j, ROAD);
+                        map.setMapArrayField(i, j-1, CAR);
+                        car.setPosition(new Position(i , j-1));
+                        car.setDirection(DOWN);
+                        break;
+                    }
                     if (map.getMapArray()[position.getX() - 1][position.getY()] == CROSS) {
                         return true;
                     }
@@ -126,6 +162,13 @@ public class Pilot {
                     car.setPosition(new Position(i - 1, j));
                     break;
                 case DOWN:
+                    if (map.getMapArray()[position.getX() + 1][position.getY()] == END) {
+                        map.setMapArrayField(i, j, ROAD);
+                        map.setMapArrayField(i, j+1, CAR);
+                        car.setPosition(new Position(i , j+1));
+                        car.setDirection(UP);
+                        break;
+                    }
                     if (map.getMapArray()[position.getX() + 1][position.getY()] == CROSS) {
                         return true;
                     }
@@ -134,6 +177,13 @@ public class Pilot {
                     car.setPosition(new Position(i + 1, j));
                     break;
                 case RIGHT:
+                    if (map.getMapArray()[position.getX()][position.getY() + 1] == END) {
+                        map.setMapArrayField(i, j, ROAD);
+                        map.setMapArrayField(i-1, j, CAR);
+                        car.setPosition(new Position(i-1 , j));
+                        car.setDirection(LEFT);
+                        break;
+                    }
                     if (map.getMapArray()[position.getX()][position.getY() + 1] == CROSS) {
                         return true;
                     }
@@ -142,6 +192,13 @@ public class Pilot {
                     car.setPosition(new Position(i, j + 1));
                     break;
                 case LEFT:
+                    if (map.getMapArray()[position.getX()][position.getY() - 1] == END) {
+                        map.setMapArrayField(i, j, ROAD);
+                        map.setMapArrayField(i+1, j, CAR);
+                        car.setPosition(new Position(i+1 , j));
+                        car.setDirection(RIGHT);
+                        break;
+                    }
                     if (map.getMapArray()[position.getX()][position.getY() - 1] == CROSS) {
                         return true;
                     }
@@ -196,14 +253,14 @@ public class Pilot {
                 return true;
             case RIGHT:
                 if(map.getMapArray()[i-1][j+1] == GRASS) return false;
-                car.setDirection(Direction.RIGHT);
+                car.setDirection(RIGHT);
                 map.setMapArrayField(i-1,j+1,USERCAR);
                 map.setMapArrayField(i,j,ROAD);
                 car.setPosition(new Position(i-1,j+1));
                 return true;
             case LEFT:
                 if(map.getMapArray()[i-2][j-2] == GRASS) return false;
-                car.setDirection(Direction.LEFT);
+                car.setDirection(LEFT);
                 map.setMapArrayField(i-2,j-2,USERCAR);
                 map.setMapArrayField(i,j,ROAD);
                 car.setPosition(new Position(i-2,j-2));
@@ -233,14 +290,14 @@ public class Pilot {
                 return true;
             case RIGHT:
                 if(map.getMapArray()[i+2][j+2] == GRASS) return false;
-                car.setDirection(Direction.RIGHT);
+                car.setDirection(RIGHT);
                 map.setMapArrayField(i+2,j+2,USERCAR);
                 map.setMapArrayField(i,j,ROAD);
                 car.setPosition(new Position(i+2,j+2));
                 return true;
             case LEFT:
                 if(map.getMapArray()[i+1][j-1] == GRASS) return false;
-                car.setDirection(Direction.LEFT);
+                car.setDirection(LEFT);
                 map.setMapArrayField(i+1,j-1,USERCAR);
                 map.setMapArrayField(i,j,ROAD);
                 car.setPosition(new Position(i+1,j-1));
@@ -270,14 +327,14 @@ public class Pilot {
                 return true;
             case RIGHT:
                 if(map.getMapArray()[i][j+2] == GRASS) return false;
-                car.setDirection(Direction.RIGHT);
+                car.setDirection(RIGHT);
                 map.setMapArrayField(i,j+2,USERCAR);
                 map.setMapArrayField(i,j,ROAD);
                 car.setPosition(new Position(i,j+2));
                 return true;
             case LEFT:
                 if(map.getMapArray()[i-1][j] == GRASS) return false;
-                car.setDirection(Direction.LEFT);
+                car.setDirection(LEFT);
                 map.setMapArrayField(i-1,j,USERCAR);
                 map.setMapArrayField(i,j,ROAD);
                 car.setPosition(new Position(i-1,j));
@@ -307,14 +364,14 @@ public class Pilot {
                 return true;
             case RIGHT:
                 if(map.getMapArray()[i+1][j] == GRASS) return false;
-                car.setDirection(Direction.RIGHT);
+                car.setDirection(RIGHT);
                 map.setMapArrayField(i+1,j,USERCAR);
                 map.setMapArrayField(i,j,ROAD);
                 car.setPosition(new Position(i+1,j));
                 return true;
             case LEFT:
                 if(map.getMapArray()[i][j-2] == GRASS) return false;
-                car.setDirection(Direction.LEFT);
+                car.setDirection(LEFT);
                 map.setMapArrayField(i,j-2,USERCAR);
                 map.setMapArrayField(i,j,ROAD);
                 car.setPosition(new Position(i,j-2));
@@ -363,14 +420,14 @@ public class Pilot {
                 return true;
             case RIGHT:
                 if(map.getMapArray()[i-1][j+1] == GRASS) return false;
-                car.setDirection(Direction.RIGHT);
+                car.setDirection(RIGHT);
                 map.setMapArrayField(i-1,j+1,CAR);
                 map.setMapArrayField(i,j,ROAD);
                 car.setPosition(new Position(i-1,j+1));
                 return true;
             case LEFT:
                 if(map.getMapArray()[i-2][j-2] == GRASS) return false;
-                car.setDirection(Direction.LEFT);
+                car.setDirection(LEFT);
                 map.setMapArrayField(i-2,j-2,CAR);
                 map.setMapArrayField(i,j,ROAD);
                 car.setPosition(new Position(i-2,j-2));
@@ -400,14 +457,14 @@ public class Pilot {
                 return true;
             case RIGHT:
                 if(map.getMapArray()[i+2][j+2] == GRASS) return false;
-                car.setDirection(Direction.RIGHT);
+                car.setDirection(RIGHT);
                 map.setMapArrayField(i+2,j+2,CAR);
                 map.setMapArrayField(i,j,ROAD);
                 car.setPosition(new Position(i+2,j+2));
                 return true;
             case LEFT:
                 if(map.getMapArray()[i+1][j-1] == GRASS) return false;
-                car.setDirection(Direction.LEFT);
+                car.setDirection(LEFT);
                 map.setMapArrayField(i+1,j-1,CAR);
                 map.setMapArrayField(i,j,ROAD);
                 car.setPosition(new Position(i+1,j-1));
@@ -437,14 +494,14 @@ public class Pilot {
                 return true;
             case RIGHT:
                 if(map.getMapArray()[i][j+2] == GRASS) return false;
-                car.setDirection(Direction.RIGHT);
+                car.setDirection(RIGHT);
                 map.setMapArrayField(i,j+2,CAR);
                 map.setMapArrayField(i,j,ROAD);
                 car.setPosition(new Position(i,j+2));
                 return true;
             case LEFT:
                 if(map.getMapArray()[i-1][j] == GRASS) return false;
-                car.setDirection(Direction.LEFT);
+                car.setDirection(LEFT);
                 map.setMapArrayField(i-1,j,CAR);
                 map.setMapArrayField(i,j,ROAD);
                 car.setPosition(new Position(i-1,j));
@@ -474,14 +531,14 @@ public class Pilot {
                 return true;
             case RIGHT:
                 if(map.getMapArray()[i+1][j] == GRASS) return false;
-                car.setDirection(Direction.RIGHT);
+                car.setDirection(RIGHT);
                 map.setMapArrayField(i+1,j,CAR);
                 map.setMapArrayField(i,j,ROAD);
                 car.setPosition(new Position(i+1,j));
                 return true;
             case LEFT:
                 if(map.getMapArray()[i][j-2] == GRASS) return false;
-                car.setDirection(Direction.LEFT);
+                car.setDirection(LEFT);
                 map.setMapArrayField(i,j-2,CAR);
                 map.setMapArrayField(i,j,ROAD);
                 car.setPosition(new Position(i,j-2));
